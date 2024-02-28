@@ -8,7 +8,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "importHelpers": true,
-    "keyofStringsOnly": true,
+    // "keyofStringsOnly": true,
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "esModuleInterop": true,

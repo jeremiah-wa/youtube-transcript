@@ -1,4 +1,4 @@
-import p from 'phin';
+import axios from 'axios';
 
 const RE_YOUTUBE =
   /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
@@ -34,7 +34,7 @@ export class YoutubeTranscript {
   ): Promise<TranscriptResponse[]> {
     const identifier = this.retrieveVideoId(videoId);
     try {
-      const { body: videoPageBody } = await p(
+      const { videoPageBody }: { videoPageBody: Record<string, any> } = await axios(
         `https://www.youtube.com/watch?v=${identifier}`
       );
       const innerTubeApiKey = videoPageBody
@@ -43,11 +43,12 @@ export class YoutubeTranscript {
         .split('"')[0];
 
       if (innerTubeApiKey && innerTubeApiKey.length > 0) {
-        const { body }: { body: Record<string, any> } = await p({
+
+        const { body }: { body: Record<string, any> } = await axios({
           url: `https://www.youtube.com/youtubei/v1/get_transcript?key=${innerTubeApiKey}`,
           method: 'POST',
           data: this.generateRequest(videoPageBody.toString(), config),
-          parse: 'json',
+          responseType: 'json'
         });
         if (body.responseContext) {
           if (!body.actions) {
