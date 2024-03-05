@@ -44,18 +44,18 @@ export class YoutubeTranscript {
 
       if (innerTubeApiKey && innerTubeApiKey.length > 0) {
 
-        const { body }: { body: Record<string, any> } = await axios({
+        const { data } = await axios({
           url: `https://www.youtube.com/youtubei/v1/get_transcript?key=${innerTubeApiKey}`,
           method: 'POST',
           data: this.generateRequest(videoPageBody.toString(), config),
           responseType: 'json'
         });
-        if (body.responseContext) {
-          if (!body.actions) {
+        if (data.responseContext) {
+          if (!data.actions) {
             throw new Error('Transcript is disabled on this video');
           }
           const transcripts =
-            body.actions[0].updateEngagementPanelAction.content
+            data.actions[0].updateEngagementPanelAction.content
               .transcriptRenderer.body.transcriptBodyRenderer.cueGroups;
 
           return transcripts.map((cue) => ({
