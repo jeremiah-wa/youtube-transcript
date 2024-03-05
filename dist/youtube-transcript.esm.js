@@ -88,7 +88,7 @@ var YoutubeTranscript = /** @class */ (function () {
      */
     YoutubeTranscript.fetchTranscript = function (videoId, config) {
         return __awaiter(this, void 0, void 0, function () {
-            var identifier, videoPageBody, innerTubeApiKey, body, transcripts, e_1;
+            var identifier, videoPageBody, innerTubeApiKey, data, transcripts, e_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -96,9 +96,11 @@ var YoutubeTranscript = /** @class */ (function () {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 5, , 6]);
+                        console.log("https://www.youtube.com/watch?v=" + identifier);
                         return [4 /*yield*/, axios("https://www.youtube.com/watch?v=" + identifier)];
                     case 2:
-                        videoPageBody = (_a.sent()).videoPageBody;
+                        videoPageBody = (_a.sent()).data;
+                        console.log(videoPageBody);
                         innerTubeApiKey = videoPageBody
                             .toString()
                             .split('"INNERTUBE_API_KEY":"')[1]
@@ -111,12 +113,12 @@ var YoutubeTranscript = /** @class */ (function () {
                                 responseType: 'json'
                             })];
                     case 3:
-                        body = (_a.sent()).body;
-                        if (body.responseContext) {
-                            if (!body.actions) {
+                        data = (_a.sent()).data;
+                        if (data.responseContext) {
+                            if (!data.actions) {
                                 throw new Error('Transcript is disabled on this video');
                             }
-                            transcripts = body.actions[0].updateEngagementPanelAction.content
+                            transcripts = data.actions[0].updateEngagementPanelAction.content
                                 .transcriptRenderer.body.transcriptBodyRenderer.cueGroups;
                             return [2 /*return*/, transcripts.map(function (cue) { return ({
                                     text: cue.transcriptCueGroupRenderer.cues[0].transcriptCueRenderer
