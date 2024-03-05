@@ -34,9 +34,15 @@ export class YoutubeTranscript {
   ): Promise<TranscriptResponse[]> {
     const identifier = this.retrieveVideoId(videoId);
     try {
+
+      console.log(`https://www.youtube.com/watch?v=${identifier}`)
+
       const {data: videoPageBody} = await axios(
         `https://www.youtube.com/watch?v=${identifier}`
       );
+      
+      console.log(videoPageBody)
+      
       const innerTubeApiKey = videoPageBody
         .toString()
         .split('"INNERTUBE_API_KEY":"')[1]
