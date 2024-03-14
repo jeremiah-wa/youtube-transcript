@@ -41,7 +41,7 @@ export class YoutubeTranscript {
         `https://www.youtube.com/watch?v=${identifier}`
       );
       
-      console.log(videoPageBody)
+      // console.log(videoPageBody)
       
       const innerTubeApiKey = videoPageBody
         .toString()
@@ -49,6 +49,14 @@ export class YoutubeTranscript {
         .split('"')[0];
 
       if (innerTubeApiKey && innerTubeApiKey.length > 0) {
+
+        console.log({
+          url: `https://www.youtube.com/youtubei/v1/get_transcript?key=${innerTubeApiKey}`,
+          method: 'POST',
+          data: this.generateRequest(videoPageBody.toString(), config),
+          responseType: 'json'
+        
+        })
 
         const { data } = await axios({
           url: `https://www.youtube.com/youtubei/v1/get_transcript?key=${innerTubeApiKey}`,

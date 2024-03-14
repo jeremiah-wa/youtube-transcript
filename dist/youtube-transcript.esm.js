@@ -100,12 +100,17 @@ var YoutubeTranscript = /** @class */ (function () {
                         return [4 /*yield*/, axios("https://www.youtube.com/watch?v=" + identifier)];
                     case 2:
                         videoPageBody = (_a.sent()).data;
-                        console.log(videoPageBody);
                         innerTubeApiKey = videoPageBody
                             .toString()
                             .split('"INNERTUBE_API_KEY":"')[1]
                             .split('"')[0];
                         if (!(innerTubeApiKey && innerTubeApiKey.length > 0)) return [3 /*break*/, 4];
+                        console.log({
+                            url: "https://www.youtube.com/youtubei/v1/get_transcript?key=" + innerTubeApiKey,
+                            method: 'POST',
+                            data: this.generateRequest(videoPageBody.toString(), config),
+                            responseType: 'json'
+                        });
                         return [4 /*yield*/, axios({
                                 url: "https://www.youtube.com/youtubei/v1/get_transcript?key=" + innerTubeApiKey,
                                 method: 'POST',
